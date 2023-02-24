@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://wallpaperfreeway.png" type="Texture" id=1]
+[ext_resource path="res://Chegada.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Main.gd" type="Script" id=4]
+[ext_resource path="res://sons/tema.wav" type="AudioStream" id=5]
+[ext_resource path="res://sons/ponto.wav" type="AudioStream" id=6]
+[ext_resource path="res://sons/ganhou.wav" type="AudioStream" id=7]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=8]
+
+[node name="Main" type="Node"]
+script = ExtResource( 4 )
+
+[node name="HUD" parent="." instance=ExtResource( 8 )]
+
+[node name="Pista" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 640, 690 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="AudioTema" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="AudioPonto" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="AudioVitoria" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="Node2D" parent="." instance=ExtResource( 2 )]
+position = Vector2( 0, 44 )
+
+[node name="TimerCarrosLentos" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="TimerCarrosRapidos" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
+[node name="PowerUpTimeAway" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="PowerUpTime" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="reinicia" from="HUD" to="." method="_on_HUD_reinicia"]
+[connection signal="pontua" from="Player" to="." method="_on_Player_pontua"]
+[connection signal="timeout" from="TimerCarrosLentos" to="." method="_on_TimerCarrosLentos_timeout"]
+[connection signal="timeout" from="TimerCarrosLentos" to="Player" method="_on_TimerCarrosLentos_timeout"]
+[connection signal="timeout" from="TimerCarrosRapidos" to="." method="_on_TimerCarrosRapidos_timeout"]
+[connection signal="timeout" from="TimerCarrosRapidos" to="Player" method="_on_TimerCarrosRapidos_timeout"]
+[connection signal="timeout" from="PowerUpTimeAway" to="." method="_on_PowerUpTimeAway_timeout"]
+[connection signal="timeout" from="PowerUpTime" to="." method="_on_PowerUpTime_timeout"]
